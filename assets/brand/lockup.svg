@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 48" role="img" aria-label="Strate">
+  <rect width="48" height="48" rx="10" fill="#06677F"/>
+  <rect x="9" y="9" width="24" height="6" fill="#F5FAFD"/>
+  <rect x="15" y="21" width="24" height="6" fill="#F5FAFD"/>
+  <rect x="9" y="33" width="24" height="6" fill="#F5FAFD"/>
+  <text x="64" y="32" fill="#171C1F" font-family="Segoe UI, Noto Sans, sans-serif" font-size="28" font-weight="500">Strate</text>
+</svg>

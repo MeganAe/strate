@@ -1,0 +1,54 @@
+<UserControl x:Class="Strate.Views.CleanupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <DockPanel>
+    <DockPanel DockPanel.Dock="Top" Margin="0,0,0,8" LastChildFill="False">
+      <Button DockPanel.Dock="Right" Margin="8,0,0,0" Content="Nettoyer" Command="{Binding CleanCommand}" />
+      <Button DockPanel.Dock="Right" Content="Annuler" Style="{StaticResource MaterialDesignOutlinedButton}" Command="{Binding CancelCommand}"
+              Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
+      <Button DockPanel.Dock="Right" Content="Mesurer" Style="{StaticResource MaterialDesignOutlinedButton}" Command="{Binding MeasureCommand}" />
+      <Button Content="Recommandations" Style="{StaticResource MaterialDesignFlatButton}" Command="{Binding CheckRecommendedCommand}" />
+      <Button Content="Tout décocher" Style="{StaticResource MaterialDesignFlatButton}" Command="{Binding UncheckAllCommand}" />
+    </DockPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+      <ItemsControl ItemsSource="{Binding CategoriesView}">
+        <ItemsControl.GroupStyle>
+          <GroupStyle>
+            <GroupStyle.HeaderTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}" Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+                           Foreground="{DynamicResource Brush.OnSurfaceVariant}" Margin="0,16,0,8" />
+              </DataTemplate>
+            </GroupStyle.HeaderTemplate>
+          </GroupStyle>
+        </ItemsControl.GroupStyle>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border BorderBrush="{DynamicResource Brush.OutlineVariant}" BorderThickness="0,0,0,1" Padding="0,10" MinHeight="72">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="160" />
+                </Grid.ColumnDefinitions>
+                <CheckBox VerticalAlignment="Center" Margin="0,0,16,0" IsChecked="{Binding IsChecked}" />
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                  <TextBlock Style="{StaticResource MaterialDesignBodyLargeTextBlock}" Text="{Binding Title}" />
+                  <TextBlock Margin="0,2,16,0" Style="{StaticResource MaterialDesignBodySmallTextBlock}"
+                             Foreground="{DynamicResource Brush.OnSurfaceVariant}" TextWrapping="Wrap" Text="{Binding Description}" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                  <TextBlock HorizontalAlignment="Right" Style="{StaticResource MaterialDesignTitleSmallTextBlock}" Text="{Binding SizeText}" />
+                  <TextBlock HorizontalAlignment="Right" Style="{StaticResource MaterialDesignBodySmallTextBlock}"
+                             Foreground="{DynamicResource Brush.OnSurfaceVariant}" Text="{Binding CountText}" />
+                  <TextBlock HorizontalAlignment="Right" Style="{StaticResource MaterialDesignLabelSmallTextBlock}"
+                             Foreground="{DynamicResource Brush.OnSurfaceVariant}" Text="{Binding Status}" />
+                </StackPanel>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+  </DockPanel>
+</UserControl>

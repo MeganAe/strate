@@ -1,0 +1,86 @@
+<UserControl x:Class="Strate.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <StackPanel>
+      <UniformGrid Columns="3" Margin="0,0,0,16">
+        <Border Style="{StaticResource FilledCard}" Margin="0,0,12,0">
+          <StackPanel>
+            <TextBlock Text="Disque système" Style="{StaticResource MaterialDesignLabelMediumTextBlock}" Foreground="{DynamicResource Brush.OnSurfaceVariant}" />
+            <TextBlock Margin="0,8,0,8" Text="{Binding SystemPercent}">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignHeadlineMediumTextBlock}">
+                  <Setter Property="Foreground" Value="{DynamicResource Brush.OnSurface}" />
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding SystemIsLow}" Value="True">
+                      <Setter Property="Foreground" Value="{DynamicResource Brush.Error}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <ProgressBar Height="4" Maximum="100" Value="{Binding SystemPercentValue}" Background="{DynamicResource Brush.Surface}" Foreground="{DynamicResource Brush.Primary}" BorderThickness="0" />
+            <TextBlock Margin="0,12,0,0" Style="{StaticResource Muted}" Text="{Binding SystemSummary}" />
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource FilledCard}" Margin="0,0,12,0">
+          <StackPanel>
+            <TextBlock Text="Récupérable" Style="{StaticResource MaterialDesignLabelMediumTextBlock}" Foreground="{DynamicResource Brush.OnSurfaceVariant}" />
+            <TextBlock Margin="0,8,0,8" Style="{StaticResource MaterialDesignHeadlineMediumTextBlock}" Text="{Binding RecoverableText}" />
+            <TextBlock Style="{StaticResource Muted}" Text="{Binding RecoverableDetail}" />
+            <Button Margin="0,16,0,0" HorizontalAlignment="Left" Content="Voir le nettoyage" Style="{StaticResource MaterialDesignOutlinedButton}" Command="{Binding OpenCleanupCommand}" />
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource FilledCard}">
+          <StackPanel>
+            <TextBlock Text="Espace libre" Style="{StaticResource MaterialDesignLabelMediumTextBlock}" Foreground="{DynamicResource Brush.OnSurfaceVariant}" />
+            <TextBlock Margin="0,8,0,8" Style="{StaticResource MaterialDesignHeadlineMediumTextBlock}" Text="{Binding FreeText}" />
+            <TextBlock Style="{StaticResource Muted}" Text="{Binding VolumeCountText, StringFormat={}{0} volume(s) fixe(s) ou amovible(s)}" />
+            <Button Margin="0,16,0,0" HorizontalAlignment="Left" Content="Actualiser" Style="{StaticResource MaterialDesignFlatButton}" Command="{Binding RefreshCommand}" />
+          </StackPanel>
+        </Border>
+      </UniformGrid>
+
+      <TextBlock Text="Volumes" Style="{StaticResource MaterialDesignTitleMediumTextBlock}" Margin="0,8,0,12" />
+      <ItemsControl ItemsSource="{Binding Volumes}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Style="{StaticResource OutlinedCard}" Margin="0,0,0,12">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="220" />
+                  <ColumnDefinition Width="120" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                  <TextBlock Style="{StaticResource MaterialDesignTitleMediumTextBlock}" Text="{Binding Title}" />
+                  <TextBlock Margin="0,4,0,0" Style="{StaticResource Muted}" Text="{Binding Meta}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="16,0">
+                  <ProgressBar Height="4" Maximum="100" Value="{Binding UsedPercent}" Background="{DynamicResource Brush.SurfaceContainerHighest}" Foreground="{DynamicResource Brush.Primary}" BorderThickness="0" />
+                  <TextBlock Margin="0,8,0,0" Style="{StaticResource MaterialDesignBodySmallTextBlock}" Foreground="{DynamicResource Brush.OnSurfaceVariant}" Text="{Binding Summary}" />
+                </StackPanel>
+                <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding PercentText}">
+                  <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTitleMediumTextBlock}">
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLow}" Value="True">
+                          <Setter Property="Foreground" Value="{DynamicResource Brush.Error}" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <views:EmptyState xmlns:views="clr-namespace:Strate.Views"
+                        Title="Aucun volume"
+                        Message="Branchez un disque ou attendez qu'un volume soit prêt, puis actualisez."
+                        IconKind="Harddisk"
+                        Visibility="{Binding HasVolumes, Converter={StaticResource BoolVis}, ConverterParameter=invert}" />
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

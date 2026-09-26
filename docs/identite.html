@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Strate — identité</title>
+<style>
+  :root {
+    --primary: #06677F;
+    --on-primary: #FFFFFF;
+    --primary-container: #B6EAFF;
+    --on-primary-container: #004E60;
+    --secondary: #4C626A;
+    --secondary-container: #CFE6F1;
+    --on-secondary-container: #344A52;
+    --tertiary: #5A5C7E;
+    --tertiary-container: #E0E0FF;
+    --on-tertiary-container: #424465;
+    --error: #BA1A1A;
+    --error-container: #FFDAD6;
+    --on-error-container: #93000A;
+    --surface: #F5FAFD;
+    --surface-low: #EFF4F7;
+    --surface-high: #E4E9EC;
+    --surface-highest: #DEE3E6;
+    --on-surface: #171C1F;
+    --on-variant: #40484C;
+    --outline: #70787C;
+    --outline-variant: #BFC8CC;
+    --inverse: #2C3134;
+    --inverse-on: #EDF1F4;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--surface); color: var(--on-surface); }
+  body {
+    font-family: "Segoe UI", "Noto Sans", sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  main { max-width: 1040px; margin: 0 auto; padding: 48px 32px 96px; }
+  header.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--outline-variant);
+    padding-bottom: 16px;
+    margin-bottom: 48px;
+  }
+  .kicker {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--on-variant);
+  }
+  h1 {
+    font-weight: 400;
+    font-size: 45px;
+    line-height: 52px;
+    margin: 8px 0 12px;
+  }
+  h2 {
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 40px;
+    margin: 64px 0 8px;
+  }
+  h3 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 0 8px;
+  }
+  p { margin: 0 0 12px; max-width: 68ch; }
+  .muted { color: var(--on-variant); }
+  .lead { font-size: 22px; line-height: 28px; max-width: 28ch; margin: 0; }
+  .lockup { display: flex; align-items: center; gap: 20px; margin: 28px 0 8px; }
+  .word { font-size: 40px; line-height: 48px; font-weight: 500; }
+  section { border-top: 1px solid var(--outline-variant); padding-top: 8px; }
+  .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items: start; }
+  .swatches { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .swatch { min-height: 88px; padding: 12px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; }
+  .swatch strong { font-size: 12px; line-height: 16px; font-weight: 500; }
+  .swatch span { font-size: 12px; line-height: 16px; font-variant-numeric: tabular-nums; }
+  table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--outline-variant); vertical-align: top; font-size: 14px; line-height: 20px; }
+  th { color: var(--on-variant); font-weight: 500; font-size: 12px; line-height: 16px; }
+  code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 13px; }
+  ul { margin: 8px 0 0; padding-left: 18px; }
+  li { margin: 4px 0; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .note {
+    background: var(--surface-highest);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .dont { background: var(--error-container); color: var(--on-error-container); border-radius: 12px; padding: 16px; }
+  .chiprow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .chip {
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid var(--outline);
+    color: var(--on-variant);
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .chip.on { background: var(--secondary-container); color: var(--on-secondary-container); border-color: var(--secondary-container); }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 24px;
+    border-radius: 999px;
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .btn.line { background: transparent; color: var(--primary); border: 1px solid var(--outline); }
+  .navdemo {
+    width: 280px;
+    background: var(--surface-low);
+    border-radius: 12px;
+    padding: 12px 0;
+  }
+  .navitem {
+    margin: 0 12px;
+    height: 56px;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 16px;
+    color: var(--on-variant);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .navitem.on { background: var(--secondary-container); color: var(--on-secondary-container); }
+  .bars { display: flex; gap: 8px; align-items: end; height: 72px; margin-top: 8px; }
+  .bars i { display: block; background: var(--primary); border-radius: 2px; width: 28px; }
+  @media (max-width: 800px) {
+    .grid, .pair, .swatches { grid-template-columns: 1fr; }
+    h1 { font-size: 36px; line-height: 44px; }
+    main { padding: 32px 20px 64px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <span class="kicker">Identité · Strate 1.0</span>
+    <span class="kicker">Material Design 3 · tonal spot</span>
+  </header>
+
+  <div class="lockup">
+    <svg width="64" height="64" viewBox="0 0 32 32" aria-hidden="true">
+      <rect width="32" height="32" rx="7" fill="#06677F"/>
+      <rect x="6" y="6" width="16" height="4" fill="#F5FAFD"/>
+      <rect x="10" y="14" width="16" height="4" fill="#F5FAFD"/>
+      <rect x="6" y="22" width="16" height="4" fill="#F5FAFD"/>
+    </svg>
+    <div>
+      <div class="word">Strate</div>
+      <p class="muted" style="margin:0">Voyez ce qui pèse. Gardez ce qui compte.</p>
+    </div>
+  </div>
+
+  <p style="margin-top:28px">Strate est une plateforme Windows de lecture et d’allègement du stockage. Le nom désigne une couche accumulée : un disque est une pile de strates. Le signe reprend cette pile, décalée d’un cran, sans flocon, sans nuage, sans dégradé.</p>
+
+  <section>
+    <h2>Signe</h2>
+    <div class="grid">
+      <div>
+        <p class="muted">Grille de 32. Trois barres de 16×4. La barre du milieu est décalée de 4 vers la droite. Rayon du carreau : 7. Les barres ne sont pas arrondies : à 16 px, un rayon les fait disparaître.</p>
+        <svg width="256" height="256" viewBox="0 0 32 32" aria-label="Construction du signe">
+          <defs>
+            <pattern id="g" width="4" height="4" patternUnits="userSpaceOnUse">
+              <path d="M 4 0 L 0 0 0 4" fill="none" stroke="#BFC8CC" stroke-width="0.15"/>
+            </pattern>
+          </defs>
+          <rect width="32" height="32" fill="url(#g)"/>
+          <rect width="32" height="32" rx="7" fill="#06677F" fill-opacity="0.92"/>
+          <rect x="6" y="6" width="16" height="4" fill="#F5FAFD"/>
+          <rect x="10" y="14" width="16" height="4" fill="#F5FAFD"/>
+          <rect x="6" y="22" width="16" height="4" fill="#F5FAFD"/>
+        </svg>
+        <p class="muted">Couleur du carreau : primary <code>#06677F</code>. Barres : surface <code>#F5FAFD</code>. Dans l’application, le signe suit les rôles : primary et on-primary, donc il s’inverse avec le thème sombre.</p>
+      </div>
+      <div>
+        <h3>À faire</h3>
+        <ul>
+          <li>Laisser le décalage visible. C’est le signe, pas une décoration.</li>
+          <li>Version monochrome : <code>assets/brand/mark-mono.svg</code>, en <code>currentColor</code>.</li>
+          <li>Zone de protection : un module de 4 autour du carreau.</li>
+          <li>Taille minimale du carreau : 16 px.</li>
+        </ul>
+        <div class="dont" style="margin-top:16px">
+          <h3>À ne pas faire</h3>
+          <ul>
+            <li>Ajouter un dégradé, une ombre, un flou, un reflet.</li>
+            <li>Remplacer les barres par une icône de balai, de disque ou de fusée.</li>
+            <li>Écrire STRATE en capitales dans l’interface. Le mot est « Strate ».</li>
+            <li>Poser le signe sur une photo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Couleur</h2>
+    <p class="muted">Source <code>#1E4D5C</code>. Schéma généré par l’algorithme HCT de Material Design 3, variante tonal spot, spec 2021, contraste standard. Ce n’est pas la palette violette par défaut, et ce n’est pas un choix de nuanciers au jugé.</p>
+    <div class="swatches">
+      <div class="swatch" style="background:#06677F;color:#fff"><strong>primary</strong><span>#06677F</span></div>
+      <div class="swatch" style="background:#B6EAFF;color:#004E60"><strong>primary-container</strong><span>#B6EAFF</span></div>
+      <div class="swatch" style="background:#4C626A;color:#fff"><strong>secondary</strong><span>#4C626A</span></div>
+      <div class="swatch" style="background:#CFE6F1;color:#344A52"><strong>secondary-container</strong><span>#CFE6F1</span></div>
+      <div class="swatch" style="background:#5A5C7E;color:#fff"><strong>tertiary</strong><span>#5A5C7E</span></div>
+      <div class="swatch" style="background:#E0E0FF;color:#424465"><strong>tertiary-container</strong><span>#E0E0FF</span></div>
+      <div class="swatch" style="background:#BA1A1A;color:#fff"><strong>error</strong><span>#BA1A1A</span></div>
+      <div class="swatch" style="background:#FFDAD6;color:#93000A"><strong>error-container</strong><span>#FFDAD6</span></div>
+      <div class="swatch" style="background:#F5FAFD;color:#171C1F;border:1px solid #BFC8CC"><strong>surface</strong><span>#F5FAFD</span></div>
+      <div class="swatch" style="background:#EFF4F7;color:#171C1F"><strong>surface-container-low</strong><span>#EFF4F7</span></div>
+      <div class="swatch" style="background:#DEE3E6;color:#171C1F"><strong>surface-container-highest</strong><span>#DEE3E6</span></div>
+      <div class="swatch" style="background:#2C3134;color:#EDF1F4"><strong>inverse-surface</strong><span>#2C3134</span></div>
+    </div>
+    <table>
+      <thead><tr><th>Rôle</th><th>Sert à</th><th>Ne sert pas à</th></tr></thead>
+      <tbody>
+        <tr><td>primary</td><td>Bouton rempli, progression, signe</td><td>Fond de page</td></tr>
+        <tr><td>secondary-container</td><td>Navigation active, puce sélectionnée</td><td>Texte</td></tr>
+        <tr><td>tertiary</td><td>Accent rare, jamais un avertissement</td><td>Remplacer error</td></tr>
+        <tr><td>error</td><td>Disque à 90 %, confirmation destructive, fermer</td><td>Décorer un graphique</td></tr>
+        <tr><td>surface</td><td>Fenêtre, barre d’application</td><td>Carte qui doit se détacher</td></tr>
+        <tr><td>surface-container-highest</td><td>Carte remplie, piste, champ rempli</td><td>Texte</td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top:12px">Thème sombre : les mêmes noms de rôles, d’autres tons. Primary sombre <code>#88D1EB</code>, surface <code>#0F1416</code>. On ne duplique pas les hex dans les vues : les vues référencent les rôles.</p>
+  </section>
+
+  <section>
+    <h2>Typographie</h2>
+    <p class="muted">Dans le logiciel, la police est Noto, livrée par MaterialDesignThemes pour Material Design 3. Cette page, ouverte hors de l’application, retombe sur Segoe UI. L’échelle est celle de M3.</p>
+    <table>
+      <thead><tr><th>Token</th><th>Exemple</th><th>Spécification</th></tr></thead>
+      <tbody>
+        <tr><td>display-small</td><td style="font-size:36px;line-height:44px;font-weight:400">32 Go</td><td>36 / 44 · Regular</td></tr>
+        <tr><td>headline-medium</td><td style="font-size:28px;line-height:36px;font-weight:400">Tableau</td><td>28 / 36 · Regular</td></tr>
+        <tr><td>title-large</td><td style="font-size:22px;line-height:28px;font-weight:500">Analyse</td><td>22 / 28 · Medium</td></tr>
+        <tr><td>title-medium</td><td style="font-size:16px;line-height:24px;font-weight:500">Disque système</td><td>16 / 24 · Medium</td></tr>
+        <tr><td>body-medium</td><td style="font-size:14px;line-height:20px">Les liens symboliques sont ignorés.</td><td>14 / 20 · Regular</td></tr>
+        <tr><td>label-large</td><td style="font-size:14px;line-height:20px;font-weight:500">Nettoyage</td><td>14 / 20 · Medium</td></tr>
+        <tr><td>label-small</td><td style="font-size:11px;line-height:16px;font-weight:500;letter-spacing:0.04em">STOCKAGE</td><td>11 / 16 · Medium</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Composants</h2>
+    <div class="pair">
+      <div>
+        <h3>Navigation</h3>
+        <p class="muted">Tiroir 280. Indicateur 56, forme pleine, secondary-container. Icône 24, écart 12.</p>
+        <div class="navdemo">
+          <div class="navitem on">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="4" width="8" height="3"/><rect x="8" y="10" width="8" height="3"/><rect x="3" y="16" width="8" height="3"/></svg>
+            Tableau de bord
+          </div>
+          <div class="navitem">Analyse</div>
+          <div class="navitem">Gros fichiers</div>
+        </div>
+      </div>
+      <div>
+        <h3>Actions</h3>
+        <p class="muted">Bouton rempli pour l’action principale. Contourné pour la seconde. Texte pour l’annulation. Pas de bouton flottant sur une grille.</p>
+        <div class="chiprow">
+          <span class="btn">Analyser</span>
+          <span class="btn line">Annuler</span>
+        </div>
+        <h3 style="margin-top:24px">Puces de filtre</h3>
+        <p class="muted">Hauteur 32, rayon 8, coche seulement à l’état sélectionné.</p>
+        <div class="chiprow">
+          <span class="chip">50 Mo</span>
+          <span class="chip on">✓ 100 Mo</span>
+          <span class="chip">500 Mo</span>
+          <span class="chip">1 Go</span>
+        </div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:16px">
+      <h3>Forme et espacement</h3>
+      <p class="muted" style="margin:0">Grille de 4. Cartes : rayon 12, élévation 0, surface-container-highest. Dialogue : rayon 28, surface-container-high. Page : marge 24. Barre d’application : 64, surface, sans ombre. La progression se pose en bas de barre, elle ne pousse pas le contenu.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Voix</h2>
+    <div class="pair">
+      <div class="note">
+        <h3>On écrit</h3>
+        <ul>
+          <li>Phrases courtes, indicatif, français.</li>
+          <li>« 12 fichiers, 340 Mo. Vous pourrez les restaurer depuis la corbeille. »</li>
+          <li>Les tailles en Ko, Mo, Go, base 1024, comme l’Explorateur.</li>
+          <li>On dit ce qui n’a pas été fait : fichier ouvert, dossier inaccessible, SMART non exposé.</li>
+        </ul>
+      </div>
+      <div class="dont">
+        <h3>On n’écrit pas</h3>
+        <ul>
+          <li>Boostez, optimisez, ultra, magique, IA, en un clic.</li>
+          <li>Points d’exclamation.</li>
+          <li>Une promesse de santé du disque que SMART n’a pas donnée.</li>
+          <li>Un anglicisme quand le mot français est clair : corbeille, pas recycle bin.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Fichiers</h2>
+    <table>
+      <thead><tr><th>Fichier</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td><code>assets/brand/mark.svg</code></td><td>Signe couleur, vectoriel</td></tr>
+        <tr><td><code>assets/brand/mark-mono.svg</code></td><td>Signe une couleur</td></tr>
+        <tr><td><code>assets/brand/lockup.svg</code></td><td>Signe + mot</td></tr>
+        <tr><td><code>assets/brand/strate.ico</code></td><td>Icône Windows, 16 à 256</td></tr>
+        <tr><td><code>docs/material.md</code></td><td>Correspondance avec la spec M3</td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top:16px">Le logiciel s’appelle Strate. L’exécutable s’appelle Strate.exe, sans accent, pour les chemins.</p>
+  </section>
+</main>
+</body>
+</html>

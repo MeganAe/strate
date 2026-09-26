@@ -1,0 +1,100 @@
+<UserControl x:Class="Strate.Views.AnalysisView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:views="clr-namespace:Strate.Views">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <Grid Margin="0,0,0,12">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="220" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <ComboBox ItemsSource="{Binding QuickRoots}" SelectedItem="{Binding QuickRoot}" materialDesign:HintAssist.Hint="Raccourci" />
+      <TextBox Grid.Column="1" Margin="12,0,0,0" Style="{StaticResource MaterialDesignFilledTextBox}"
+               materialDesign:HintAssist.Hint="Dossier" Text="{Binding FolderPath, UpdateSourceTrigger=PropertyChanged}" />
+      <Button Grid.Column="2" Margin="4,0,0,0" Style="{StaticResource MaterialDesignIconButton}" Command="{Binding BrowseCommand}" ToolTip="Choisir un dossier">
+        <materialDesign:PackIcon Kind="FolderOpen" />
+      </Button>
+      <Button Grid.Column="3" Margin="8,0,0,0" Content="Analyser" Command="{Binding AnalyzeCommand}" />
+      <Button Grid.Column="4" Margin="8,0,0,0" Content="Annuler" Style="{StaticResource MaterialDesignOutlinedButton}" Command="{Binding CancelCommand}"
+              Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
+    </Grid>
+
+    <DockPanel Grid.Row="1" Margin="0,0,0,8" LastChildFill="False">
+      <Button DockPanel.Dock="Left" Content="Dossier parent" Style="{StaticResource MaterialDesignFlatButton}" Command="{Binding GoParentCommand}" />
+      <ItemsControl ItemsSource="{Binding Crumbs}" Margin="8,0,0,0">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Button Content="{Binding Name}" Style="{StaticResource MaterialDesignFlatButton}" Padding="8,0" Height="36"
+                    Command="{Binding DataContext.OpenCrumbCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    CommandParameter="{Binding}" />
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </DockPanel>
+
+    <DockPanel Grid.Row="2" Margin="0,0,0,8">
+      <Button DockPanel.Dock="Right" Content="Emplacement" Style="{StaticResource MaterialDesignFlatButton}" Command="{Binding OpenLocationCommand}" />
+      <TextBlock Style="{StaticResource MaterialDesignTitleSmallTextBlock}" VerticalAlignment="Center" Text="{Binding TotalText}" />
+    </DockPanel>
+
+    <Grid Grid.Row="3">
+      <DataGrid Style="{StaticResource StrateGrid}" ItemsSource="{Binding Entries}" SelectedItem="{Binding SelectedEntry}">
+        <DataGrid.Columns>
+          <DataGridTemplateColumn Header="Nom" Width="*">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal">
+                  <materialDesign:PackIcon Kind="{Binding Icon}" Width="20" Height="20" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{DynamicResource Brush.OnSurfaceVariant}" />
+                  <TextBlock Style="{StaticResource GridText}" Text="{Binding Name}" ToolTip="{Binding FullPath}" />
+                </StackPanel>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+          <DataGridTemplateColumn Header="Part" Width="160">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <Grid Width="140" Height="4" VerticalAlignment="Center">
+                  <Border Background="{DynamicResource Brush.SurfaceContainerHighest}" CornerRadius="2" />
+                  <Border Background="{DynamicResource Brush.Primary}" CornerRadius="2" HorizontalAlignment="Left" Width="{Binding BarWidth}" />
+                </Grid>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+          <DataGridTextColumn Header="Taille" Width="110" Binding="{Binding SizeText}" IsReadOnly="True" ElementStyle="{StaticResource GridText}" />
+          <DataGridTextColumn Header="%" Width="70" Binding="{Binding PercentText}" IsReadOnly="True" ElementStyle="{StaticResource GridText}" />
+          <DataGridTextColumn Header="Type" Width="90" Binding="{Binding KindText}" IsReadOnly="True" ElementStyle="{StaticResource GridText}" />
+          <DataGridTemplateColumn Header="" Width="90">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <Button Content="Entrer" Style="{StaticResource MaterialDesignFlatButton}" Height="32" Padding="8,0"
+                        Visibility="{Binding IsDirectory, Converter={StaticResource BoolVis}}"
+                        Command="{Binding DataContext.EnterCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                        CommandParameter="{Binding}" />
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+      <views:EmptyState Title="Rien à montrer"
+                        Message="Choisissez un dossier et lancez l'analyse. Le résultat liste les éléments du niveau courant, du plus lourd au plus léger."
+                        IconKind="ChartBar"
+                        Visibility="{Binding HasEntries, Converter={StaticResource BoolVis}, ConverterParameter=invert}" />
+    </Grid>
+  </Grid>
+</UserControl>

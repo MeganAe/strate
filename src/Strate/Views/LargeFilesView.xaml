@@ -1,0 +1,72 @@
+<UserControl x:Class="Strate.Views.LargeFilesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:views="clr-namespace:Strate.Views">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <Grid Margin="0,0,0,12">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="220" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <ComboBox ItemsSource="{Binding QuickRoots}" SelectedItem="{Binding QuickRoot}" materialDesign:HintAssist.Hint="Raccourci" />
+      <TextBox Grid.Column="1" Margin="12,0,0,0" Style="{StaticResource MaterialDesignFilledTextBox}"
+               materialDesign:HintAssist.Hint="Dossier" Text="{Binding FolderPath, UpdateSourceTrigger=PropertyChanged}" />
+      <Button Grid.Column="2" Margin="4,0,0,0" Style="{StaticResource MaterialDesignIconButton}" Command="{Binding BrowseCommand}" ToolTip="Choisir un dossier">
+        <materialDesign:PackIcon Kind="FolderOpen" />
+      </Button>
+      <Button Grid.Column="3" Margin="8,0,0,0" Content="Rechercher" Command="{Binding ScanCommand}" />
+      <Button Grid.Column="4" Margin="8,0,0,0" Content="Annuler" Style="{StaticResource MaterialDesignOutlinedButton}" Command="{Binding CancelCommand}"
+              Visibility="{Binding IsBusy, Converter={StaticResource BoolVis}}" />
+    </Grid>
+
+    <ItemsControl Grid.Row="1" Margin="0,0,0,12" ItemsSource="{Binding Thresholds}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <RadioButton Content="{Binding Label}" GroupName="LargeThreshold" Style="{StaticResource FilterChip}" IsChecked="{Binding IsActive, Mode=TwoWay}" />
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+    <DockPanel Grid.Row="2" Margin="0,0,0,8">
+      <Button DockPanel.Dock="Right" Margin="8,0,0,0" Content="Corbeille" Command="{Binding RecycleCheckedCommand}" />
+      <Button DockPanel.Dock="Right" Content="Emplacement" Style="{StaticResource MaterialDesignOutlinedButton}" Command="{Binding OpenLocationCommand}" />
+      <Button DockPanel.Dock="Right" Content="Décocher" Style="{StaticResource MaterialDesignFlatButton}" Command="{Binding UncheckAllCommand}" />
+      <Button DockPanel.Dock="Right" Content="Cocher visibles" Style="{StaticResource MaterialDesignFlatButton}" Command="{Binding CheckVisibleCommand}" />
+      <TextBox Width="240" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Filtrer"
+               Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}" />
+      <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Style="{StaticResource Muted}" Text="{Binding Summary}" />
+    </DockPanel>
+
+    <Grid Grid.Row="3">
+      <DataGrid Style="{StaticResource StrateGrid}" ItemsSource="{Binding RowsView}" SelectedItem="{Binding SelectedRow}">
+        <DataGrid.Columns>
+          <DataGridCheckBoxColumn Header="" Width="48" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
+          <DataGridTextColumn Header="Nom" Width="220" Binding="{Binding Name}" IsReadOnly="True" ElementStyle="{StaticResource GridText}" />
+          <DataGridTextColumn Header="Taille" Width="110" Binding="{Binding SizeText}" IsReadOnly="True" ElementStyle="{StaticResource GridText}" />
+          <DataGridTextColumn Header="Modifié" Width="150" Binding="{Binding ModifiedText}" IsReadOnly="True" ElementStyle="{StaticResource GridText}" />
+          <DataGridTextColumn Header="Dossier" Width="*" Binding="{Binding DirectoryText}" IsReadOnly="True" ElementStyle="{StaticResource GridText}" />
+        </DataGrid.Columns>
+      </DataGrid>
+      <views:EmptyState Title="Aucun gros fichier"
+                        Message="Lancez une recherche. Seuls les fichiers au-dessus du seuil choisi apparaissent."
+                        IconKind="FileFind"
+                        Visibility="{Binding HasRows, Converter={StaticResource BoolVis}, ConverterParameter=invert}" />
+    </Grid>
+  </Grid>
+</UserControl>

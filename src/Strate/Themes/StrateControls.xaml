@@ -1,0 +1,215 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:conv="clr-namespace:Strate.Converters">
+
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Snackbar.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
+  <conv:BoolToVisibilityConverter x:Key="BoolVis" />
+
+  <!-- Carte remplie M3 : surface-container-highest, forme medium 12, élévation 0. -->
+  <Style x:Key="FilledCard" TargetType="Border">
+    <Setter Property="Background" Value="{DynamicResource Brush.SurfaceContainerHighest}" />
+    <Setter Property="CornerRadius" Value="12" />
+    <Setter Property="Padding" Value="16" />
+    <Setter Property="SnapsToDevicePixels" Value="True" />
+  </Style>
+
+  <Style x:Key="OutlinedCard" TargetType="Border">
+    <Setter Property="Background" Value="{DynamicResource Brush.Surface}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.OutlineVariant}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="12" />
+    <Setter Property="Padding" Value="16" />
+    <Setter Property="SnapsToDevicePixels" Value="True" />
+  </Style>
+
+  <Style x:Key="SectionLabel" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignLabelSmallTextBlock}">
+    <Setter Property="Foreground" Value="{DynamicResource Brush.OnSurfaceVariant}" />
+    <Setter Property="Margin" Value="16,16,16,8" />
+  </Style>
+
+  <Style x:Key="Muted" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBodyMediumTextBlock}">
+    <Setter Property="Foreground" Value="{DynamicResource Brush.OnSurfaceVariant}" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+  </Style>
+
+  <!--
+    Élément de navigation M3.
+    Indicateur : secondary-container, hauteur 56, forme pleine, retrait horizontal 12.
+    Icône 24, écart 12, libellé label-large.
+    Inactif : on-surface-variant. Survol : couche d'état 8 %.
+  -->
+  <Style x:Key="NavItem" TargetType="RadioButton">
+    <Setter Property="Height" Value="56" />
+    <Setter Property="Margin" Value="12,0" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="Foreground" Value="{DynamicResource Brush.OnSurfaceVariant}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="RadioButton">
+          <Border x:Name="Root"
+                  Height="56"
+                  CornerRadius="28"
+                  Background="{TemplateBinding Background}"
+                  SnapsToDevicePixels="True">
+            <Grid>
+              <Border x:Name="Hover" CornerRadius="28" Background="{DynamicResource Brush.StateHover}" Opacity="0" />
+              <Border x:Name="Press" CornerRadius="28" Background="{DynamicResource Brush.StatePressed}" Opacity="0" />
+              <Border x:Name="Focus" CornerRadius="28" BorderBrush="{DynamicResource Brush.Primary}" BorderThickness="0" />
+              <ContentPresenter Margin="16,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            </Grid>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+              <Setter Property="Background" Value="{DynamicResource Brush.SecondaryContainer}" />
+              <Setter Property="Foreground" Value="{DynamicResource Brush.OnSecondaryContainer}" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Hover" Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+              <Setter TargetName="Press" Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+              <Setter TargetName="Focus" Property="BorderThickness" Value="2" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Opacity" Value="0.38" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- Puce de filtre M3 : hauteur 32, forme 8, contour outline, sélection secondary-container + coche. -->
+  <Style x:Key="FilterChip" TargetType="RadioButton">
+    <Setter Property="Height" Value="32" />
+    <Setter Property="MinWidth" Value="48" />
+    <Setter Property="Margin" Value="0,0,8,0" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="Foreground" Value="{DynamicResource Brush.OnSurfaceVariant}" />
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="RadioButton">
+          <Border x:Name="Root"
+                  Height="32"
+                  CornerRadius="8"
+                  Padding="12,0"
+                  Background="Transparent"
+                  BorderBrush="{DynamicResource Brush.Outline}"
+                  BorderThickness="1"
+                  SnapsToDevicePixels="True">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+              <materialDesign:PackIcon x:Name="Check" Kind="Check" Width="18" Height="18" Margin="0,0,6,0" Visibility="Collapsed" />
+              <ContentPresenter VerticalAlignment="Center" />
+            </StackPanel>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+              <Setter TargetName="Root" Property="Background" Value="{DynamicResource Brush.SecondaryContainer}" />
+              <Setter TargetName="Root" Property="BorderBrush" Value="{DynamicResource Brush.SecondaryContainer}" />
+              <Setter Property="Foreground" Value="{DynamicResource Brush.OnSecondaryContainer}" />
+              <Setter TargetName="Check" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Root" Property="Opacity" Value="0.88" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Opacity" Value="0.38" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="CaptionButton" TargetType="Button">
+    <Setter Property="Width" Value="46" />
+    <Setter Property="Height" Value="64" />
+    <Setter Property="Foreground" Value="{DynamicResource Brush.OnSurface}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border x:Name="Root" Background="{TemplateBinding Background}">
+            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Root" Property="Background" Value="{DynamicResource Brush.StateHover}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+              <Setter TargetName="Root" Property="Background" Value="{DynamicResource Brush.StatePressed}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="CaptionCloseButton" TargetType="Button" BasedOn="{StaticResource CaptionButton}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border x:Name="Root" Background="Transparent">
+            <materialDesign:PackIcon Kind="WindowClose" Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Root" Property="Background" Value="{DynamicResource Brush.StateHover}" />
+              <Setter Property="Foreground" Value="{DynamicResource Brush.OnSurface}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+              <Setter TargetName="Root" Property="Background" Value="{DynamicResource Brush.StatePressed}" />
+              <Setter Property="Foreground" Value="{DynamicResource Brush.OnSurface}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="StrateGrid" TargetType="DataGrid" BasedOn="{StaticResource MaterialDesignDataGrid}">
+    <Setter Property="AutoGenerateColumns" Value="False" />
+    <Setter Property="CanUserAddRows" Value="False" />
+    <Setter Property="CanUserDeleteRows" Value="False" />
+    <Setter Property="HeadersVisibility" Value="Column" />
+    <Setter Property="GridLinesVisibility" Value="Horizontal" />
+    <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource Brush.OutlineVariant}" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="RowBackground" Value="Transparent" />
+    <Setter Property="AlternatingRowBackground" Value="Transparent" />
+    <Setter Property="RowHeight" Value="52" />
+    <Setter Property="ColumnHeaderHeight" Value="40" />
+    <Setter Property="EnableRowVirtualization" Value="True" />
+    <Setter Property="EnableColumnVirtualization" Value="True" />
+    <Setter Property="SelectionMode" Value="Single" />
+    <Setter Property="SelectionUnit" Value="FullRow" />
+    <Setter Property="IsReadOnly" Value="False" />
+    <Setter Property="FontSize" Value="14" />
+  </Style>
+
+  <Style x:Key="GridText" TargetType="TextBlock">
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    <Setter Property="Margin" Value="0,0,12,0" />
+  </Style>
+
+</ResourceDictionary>

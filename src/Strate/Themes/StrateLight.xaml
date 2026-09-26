@@ -1,0 +1,47 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+  <!--
+    Schéma Material Design 3, variante tonal spot, spec 2021, contraste standard.
+    Couleur source #1E4D5C. Rôles générés par l'algorithme HCT (Material Color Utilities).
+  -->
+  <sys:String x:Key="Strate.TokenSet">light</sys:String>
+
+  <SolidColorBrush x:Key="Brush.Primary" Color="#06677F" />
+  <SolidColorBrush x:Key="Brush.OnPrimary" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="Brush.PrimaryContainer" Color="#B6EAFF" />
+  <SolidColorBrush x:Key="Brush.OnPrimaryContainer" Color="#004E60" />
+  <SolidColorBrush x:Key="Brush.Secondary" Color="#4C626A" />
+  <SolidColorBrush x:Key="Brush.OnSecondary" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="Brush.SecondaryContainer" Color="#CFE6F1" />
+  <SolidColorBrush x:Key="Brush.OnSecondaryContainer" Color="#344A52" />
+  <SolidColorBrush x:Key="Brush.Tertiary" Color="#5A5C7E" />
+  <SolidColorBrush x:Key="Brush.OnTertiary" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="Brush.TertiaryContainer" Color="#E0E0FF" />
+  <SolidColorBrush x:Key="Brush.OnTertiaryContainer" Color="#424465" />
+  <SolidColorBrush x:Key="Brush.Error" Color="#BA1A1A" />
+  <SolidColorBrush x:Key="Brush.OnError" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="Brush.ErrorContainer" Color="#FFDAD6" />
+  <SolidColorBrush x:Key="Brush.OnErrorContainer" Color="#93000A" />
+  <SolidColorBrush x:Key="Brush.Surface" Color="#F5FAFD" />
+  <SolidColorBrush x:Key="Brush.SurfaceDim" Color="#D6DBDE" />
+  <SolidColorBrush x:Key="Brush.SurfaceBright" Color="#F5FAFD" />
+  <SolidColorBrush x:Key="Brush.SurfaceContainerLowest" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="Brush.SurfaceContainerLow" Color="#EFF4F7" />
+  <SolidColorBrush x:Key="Brush.SurfaceContainer" Color="#EAEFF1" />
+  <SolidColorBrush x:Key="Brush.SurfaceContainerHigh" Color="#E4E9EC" />
+  <SolidColorBrush x:Key="Brush.SurfaceContainerHighest" Color="#DEE3E6" />
+  <SolidColorBrush x:Key="Brush.OnSurface" Color="#171C1F" />
+  <SolidColorBrush x:Key="Brush.OnSurfaceVariant" Color="#40484C" />
+  <SolidColorBrush x:Key="Brush.SurfaceVariant" Color="#DBE4E8" />
+  <SolidColorBrush x:Key="Brush.Outline" Color="#70787C" />
+  <SolidColorBrush x:Key="Brush.OutlineVariant" Color="#BFC8CC" />
+  <SolidColorBrush x:Key="Brush.InverseSurface" Color="#2C3134" />
+  <SolidColorBrush x:Key="Brush.InverseOnSurface" Color="#EDF1F4" />
+  <SolidColorBrush x:Key="Brush.InversePrimary" Color="#88D1EB" />
+  <SolidColorBrush x:Key="Brush.StateHover" Color="#14171C1F" />
+  <SolidColorBrush x:Key="Brush.StatePressed" Color="#1F171C1F" />
+  <SolidColorBrush x:Key="Brush.Scrim" Color="#52000000" />
+
+</ResourceDictionary>

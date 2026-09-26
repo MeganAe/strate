@@ -1,0 +1,90 @@
+name: Compiler l'exécutable
+
+# Déclenchement manuel : Actions → Compiler l'exécutable → Run workflow.
+# Le fichier doit être sur la branche par défaut pour apparaître dans l'onglet Actions.
+
+on:
+  workflow_dispatch:
+    inputs:
+      configuration:
+        description: Configuration
+        required: true
+        default: Release
+        type: choice
+        options:
+          - Release
+          - Debug
+      runtime:
+        description: Architecture Windows
+        required: true
+        default: win-x64
+        type: choice
+        options:
+          - win-x64
+          - win-arm64
+      single_file:
+        description: Un seul fichier .exe (si le lancement échoue, relancez avec false)
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publier Strate
+    runs-on: windows-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Vérifier le SDK
+        run: dotnet --info
+
+      - name: Restaurer et publier
+        shell: pwsh
+        run: |
+          $single = "${{ inputs.single_file }}" -eq "true"
+          $args = @(
+            "publish", "src/Strate/Strate.csproj",
+            "-c", "${{ inputs.configuration }}",
+            "-r", "${{ inputs.runtime }}",
+            "--self-contained", "true",
+            "-o", "artifacts/publish"
+          )
+          if ($single) {
+            $args += @(
+              "-p:PublishSingleFile=true",
+              "-p:IncludeNativeLibrariesForSelfExtract=true",
+              "-p:IncludeAllContentForSelfExtract=true"
+            )
+          }
+          dotnet @args
+          if (-not (Test-Path "artifacts/publish/Strate.exe")) {
+            throw "Strate.exe est absent du dossier de publication."
+          }
+
+      - name: Emballer
+        shell: pwsh
+        run: |
+          $name = "Strate-${{ inputs.runtime }}"
+          if ("${{ inputs.single_file }}" -eq "true") { $name += "-single" }
+          Compress-Archive -Path artifacts/publish/* -DestinationPath "artifacts/$name.zip" -Force
+          Get-ChildItem artifacts | Format-Table Name, Length
+
+      - name: Déposer l'artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Strate-${{ inputs.runtime }}
+          path: artifacts/*.zip
+          if-no-files-found: error
+          retention-days: 30
