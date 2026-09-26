@@ -19,7 +19,6 @@ public static class SpaceAnalyzer
 
         var sizes = new long[children.Count];
         var files = 0;
-        var gate = new object();
         var lastReport = Environment.TickCount64;
         var options = new ParallelOptions
         {
@@ -27,11 +26,10 @@ public static class SpaceAnalyzer
             MaxDegreeOfParallelism = Math.Max(1, Math.Min(4, Environment.ProcessorCount))
         };
 
-        Parallel.For(0, children.Count, options, index =>
+        Parallel.For(0, children.Count, options, () => 0, (index, _, localFiles) =>
         {
             var (path, directory) = children[index];
             long size;
-            int localFiles;
             if (directory)
                 (size, localFiles) = MeasureTree(path, ct);
             else
@@ -41,17 +39,27 @@ public static class SpaceAnalyzer
             }
 
             sizes[index] = size;
+            return localFiles;
+        }, localFiles =>
+        {
+            if (localFiles == 0)
+                return;
+
+            var newTotal = Interlocked.Add(ref files, localFiles);
             if (progress is null)
                 return;
 
-            lock (gate)
+            var now = Environment.TickCount64;
+            while (true)
             {
-                files += localFiles;
-                var now = Environment.TickCount64;
-                if (now - lastReport > 250)
+                var previous = Volatile.Read(ref lastReport);
+                if (now - previous <= 250)
+                    return;
+
+                if (Interlocked.CompareExchange(ref lastReport, now, previous) == previous)
                 {
-                    lastReport = now;
-                    progress.Report(new ScanTick(files, path));
+                    progress.Report(new ScanTick(newTotal, "analyse"));
+                    return;
                 }
             }
         });

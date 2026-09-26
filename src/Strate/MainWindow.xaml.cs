@@ -13,6 +13,21 @@ public partial class MainWindow : Window
         StateChanged += (_, _) => UpdateMaxIcon();
     }
 
+    public void CenterOnCurrentMonitor()
+    {
+        if (WindowState == WindowState.Maximized)
+            return;
+
+        var workArea = SystemParameters.WorkArea;
+        var width = Width > 0 ? Width : ActualWidth;
+        var height = Height > 0 ? Height : ActualHeight;
+        if (width <= 0 || height <= 0)
+            return;
+
+        Left = workArea.Left + (workArea.Width - width) / 2;
+        Top = workArea.Top + (workArea.Height - height) / 2;
+    }
+
     protected override void OnActivated(EventArgs e)
     {
         base.OnActivated(e);

@@ -57,7 +57,7 @@
                   <TextBlock Margin="0,4,0,0" Style="{StaticResource Muted}" Text="{Binding Meta}" />
                 </StackPanel>
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="16,0">
-                  <ProgressBar Height="4" Maximum="100" Value="{Binding UsedPercent}" Background="{DynamicResource Brush.SurfaceContainerHighest}" Foreground="{DynamicResource Brush.Primary}" BorderThickness="0" />
+                  <ProgressBar Height="4" Maximum="100" Value="{Binding UsedPercent, Mode=OneWay}" Background="{DynamicResource Brush.SurfaceContainerHighest}" Foreground="{DynamicResource Brush.Primary}" BorderThickness="0" />
                   <TextBlock Margin="0,8,0,0" Style="{StaticResource MaterialDesignBodySmallTextBlock}" Foreground="{DynamicResource Brush.OnSurfaceVariant}" Text="{Binding Summary}" />
                 </StackPanel>
                 <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding PercentText}">
